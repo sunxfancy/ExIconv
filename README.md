@@ -1,6 +1,8 @@
 # ExIconv
 这是一个C语言编码自动解析库
 
+对于跨平台开发，推荐使用C++版estring，支持conan包管理器：<https://github.com/sunxfancy/estring>
+
 整合了libiconv和libcharsetdetect
 实现了自动读取文本并判断编码形式，转换为UTF-32方便处理
 
