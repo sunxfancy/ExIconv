@@ -1,12 +1,14 @@
 # ExIconv
-这是一个C语言编码自动解析库
+It's a encoding auto-detection library in C
 
-对于跨平台开发，推荐使用C++版estring，支持conan包管理器：<https://github.com/sunxfancy/estring>
+For cross-platform and C++ version, please using the estring which support Conan package manager:
 
-整合了libiconv和libcharsetdetect
-实现了自动读取文本并判断编码形式，转换为UTF-32方便处理
+<https://github.com/sunxfancy/estring>
 
-使用示例：
+It combines libiconv and libcharsetdetect to auto-detect encoding and directly transform to UTF-32.
+
+Example: 
+
 ```C
 #include "stdio.h"
 #include "exiconv.h"
@@ -24,7 +26,7 @@ int main(int argc, const char * argv[]) {
 }
 ```
 
-核心接口：
+Functions:
 ```C
 
 typedef uint32_t echar_t;
@@ -32,24 +34,24 @@ struct FILE;
 
 
 /**
- * @brief 将UTF-32的字符串转换为utf8编码，便于输出
+ * @brief translate UTF-32 string to utf8 for output
  * 
- * @param data UTF-32格式的字符串数组
- * @param outsize 转换后的C字符串长度
+ * @param data UTF-32 array
+ * @param outsize length of the string after transform
  * 
- * @return 转换后的字符串，会自动新malloc空间，用过后由调用者释放
+ * @return It will auto malloc space for the new string, please free it after use
  */
 extern char* 
 conv2utf8 (const echar_t* data, size_t* outsize);
 
 
 /**
- * @brief 将utf8编码转换为内部UTF-32格式
+ * @brief translate utf8 to UTF-32 array
  * 
- * @param data C风格字符串数组
- * @param outsize 转换后的UTF-32字符串长度
+ * @param data utf8 string array 
+ * @param outsize length of the string after transform
  * 
- * @return 转换后的字符串，会自动新malloc空间，用过后由调用者释放
+ * @return It will auto malloc space for the new string, please free it after use
  */
 extern echar_t*
 utf8conv2echar (const char* data, size_t* outsize);
@@ -58,24 +60,24 @@ utf8conv2echar (const char* data, size_t* outsize);
 
 
 /**
- * @brief 将UTF-32的字符串转换为utf8编码，便于输出
+ * @brief translate UTF-32 string to a special encode
  * 
- * @param data UTF-32格式的字符串数组
- * @param outsize 转换后的C字符串长度
+ * @param data UTF-32 array
+ * @param outsize length of the string after transform
  * 
- * @return 转换后的字符串，会自动新malloc空间，用过后由调用者释放
+ * @return It will auto malloc space for the new string, please free it after use
  */
 extern char* 
 echar2code (const echar_t* data, size_t* outsize, const char* encode);
 
 
 /**
- * @brief 将指定编码转换为内部UTF-32格式
+ * @brief translate a special encode to UTF-32 string 
  * 
- * @param data C风格字符串数组
- * @param outsize 转换后的UTF-32字符串长度
+ * @param data string array
+ * @param outsize length of the string after transform
  * 
- * @return 转换后的字符串，会自动新malloc空间，用过后由调用者释放
+ * @return It will auto malloc space for the new string, please free it after use
  */
 extern echar_t*
 code2echar (const char* data, size_t* outsize, const char* encode);
@@ -84,60 +86,60 @@ code2echar (const char* data, size_t* outsize, const char* encode);
 
 
 /**
- * @brief 自动读取文件下的文本内容，识别文本编码，并自动转换位为UTF-32的内部编码格式
+ * @brief Read the file and auto-detect encoding, then translate into UTF-32 array
  * 
- * @param f 文件指针，读模式打开
- * @param outsize 转换后的字符串长度
+ * @param f FILE pointer (binary read mode)
+ * @param outsize length of the string after transform
  * 
- * @return 转换后的字符串，会自动新malloc空间，用过后由调用者释放
+ * @return It will auto malloc space for the new string, please free it after use
  */
 extern echar_t*
 autoreadfile (FILE* f, size_t* outsize);
 
 
 /**
- * @brief 自动识别文本格式，并转换为内部使用的UTF-32
+ * @brief auto-detect encoding, then translate into UTF-32 array
  * 
- * @param data 传入的字符串原始数据
- * @param outsize 转换后的字符串长度
+ * @param data string data
+ * @param outsize length of the string after transform
  * 
- * @return 转换后的字符串，会自动新malloc空间，用过后由调用者释放
+ * @return It will auto malloc space for the new string, please free it after use
  */
 extern echar_t*
 autoreadchar (const char* data, size_t* outsize);
 
 
 /**
- * @brief 分析该段字符串的编码
+ * @brief detect encoding
  * 
- * @param data 字符串元数据，必须\0结尾，否则可能异常
- * @return 编码名称，如果为NULL则分析失败
+ * @param data string data end with '\0'
+ * @return name of the encoding, NULL if it's failure
  */
 extern const char*
 encodedetect (const char* data);
 
 /**
- * @brief 分析该文件的编码
+ * @brief detect encoding for the file
  * 
- * @param data 文件指针
- * @return 编码名称，如果为NULL则分析失败
+ * @param data FILE pointer (binary read mode)
+ * @return name of the encoding, NULL if it's failure
  */
 extern const char*
 fileencodedetect (FILE* f);
 
 
 /**
- * @brief 字符串长度计算
+ * @brief get the length of string
  * 
- * @param str 要测量的字符串，必须0结尾
- * @return 长度
+ * @param str string data end with '\0'
+ * @return length
  */
 extern size_t
 estrlen (const echar_t* str);
 
 
 /**
- * 释放字符串使用
+ * Free the data
  */
 #define FreeStr(p) free_str((void**)&p)
 
