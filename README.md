@@ -1,5 +1,8 @@
 # ExIconv
-It's a encoding auto-detection library in C
+
+[中文文档](./README-cn.md)
+
+It's an encoding auto-detection library in C
 
 For cross-platform and C++ version, please using the estring which support Conan package manager:
 
